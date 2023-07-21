@@ -2,6 +2,7 @@ package com.bytewave.stockcontroller.services;
 
 import com.bytewave.stockcontroller.models.Product;
 import com.bytewave.stockcontroller.repositories.ProductRepository;
+import com.bytewave.stockcontroller.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,6 @@ public class ProductService {
 
     public Product findById(String id){
         Optional<Product> product = repository.findById(id);
-        return product.get();
+        return product.orElseThrow(() -> new ObjectNotFoundException("Object not found!"));
     }
 }
