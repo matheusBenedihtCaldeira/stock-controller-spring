@@ -18,12 +18,14 @@ public class UserController {
     @Autowired
     private UserService service;
 
+    //Index all users
     @GetMapping
     public ResponseEntity<List<User>> index(){
         List<User> users = service.index();
         return ResponseEntity.ok().body(users);
     }
 
+    //Insert a new user
     @PostMapping
     public ResponseEntity<User> insert(@RequestBody UserDTO dataDTO){
         User user = service.fromDTO(dataDTO);
@@ -31,4 +33,12 @@ public class UserController {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
+
+   //Find user by id
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<User> findById(@PathVariable String id){
+        User user = service.findById(id);
+        return ResponseEntity.ok().body(user);
+    }
+
 }
