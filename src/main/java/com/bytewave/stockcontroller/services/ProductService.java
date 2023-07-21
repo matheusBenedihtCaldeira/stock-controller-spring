@@ -15,18 +15,25 @@ public class ProductService {
     @Autowired
     private ProductRepository repository;
 
-
+    //Index all products
     public List<Product> index(){
         return repository.findAll();
     }
 
-
+    //Insert a new product
     public Product insert(Product data){
         return repository.insert(data);
     }
 
+    //Find a product by id
     public Product findById(String id){
         Optional<Product> product = repository.findById(id);
         return product.orElseThrow(() -> new ObjectNotFoundException("Object not found!"));
+    }
+
+    //Delete product
+    public void delete(String id){
+        findById(id);
+        repository.deleteById(id);
     }
 }

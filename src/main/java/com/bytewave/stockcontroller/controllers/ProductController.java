@@ -9,7 +9,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
 @RequestMapping(value = "/products")
@@ -38,6 +38,13 @@ public class ProductController {
     public ResponseEntity<Product> findById(@PathVariable String id){
         Product obj = service.findById(id);
         return ResponseEntity.ok().body(obj);
+    }
+
+    //Delete product by id
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable String id){
+        service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
