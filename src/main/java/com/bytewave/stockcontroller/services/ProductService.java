@@ -1,6 +1,7 @@
 package com.bytewave.stockcontroller.services;
 
-import com.bytewave.stockcontroller.models.Product;
+import com.bytewave.stockcontroller.models.dto.ProductDTO;
+import com.bytewave.stockcontroller.models.entities.Product;
 import com.bytewave.stockcontroller.repositories.ProductRepository;
 import com.bytewave.stockcontroller.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,5 +36,24 @@ public class ProductService {
     public void delete(String id){
         findById(id);
         repository.deleteById(id);
+    }
+
+    //Update product in database
+    public Product update(Product product){
+        Product newProduct = findById(product.getId());
+        updateData(newProduct, product);
+        return repository.save(newProduct);
+    }
+
+    //Update product
+    public void updateData(Product newData, Product data){
+        newData.setName(data.getName());
+        newData.setPrice(data.getPrice());
+        newData.setDescription(data.getDescription());
+        newData.setQuantity(data.getQuantity());
+    }
+
+    public Product fromDTO(ProductDTO dataDTO){
+        return new Product(dataDTO.getId(), dataDTO.getName(), dataDTO.getDescription(), dataDTO.getPrice(), dataDTO.getQuantity());
     }
 }

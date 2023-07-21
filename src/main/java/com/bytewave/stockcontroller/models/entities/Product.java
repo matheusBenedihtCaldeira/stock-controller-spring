@@ -1,4 +1,4 @@
-package com.bytewave.stockcontroller.models;
+package com.bytewave.stockcontroller.models.entities;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

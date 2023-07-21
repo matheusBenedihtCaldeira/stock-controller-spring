@@ -1,6 +1,6 @@
 package com.bytewave.stockcontroller.repositories;
 
-import com.bytewave.stockcontroller.models.Product;
+import com.bytewave.stockcontroller.models.entities.Product;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

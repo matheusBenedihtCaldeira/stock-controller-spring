@@ -1,6 +1,7 @@
 package com.bytewave.stockcontroller.controllers;
 
-import com.bytewave.stockcontroller.models.Product;
+import com.bytewave.stockcontroller.models.dto.ProductDTO;
+import com.bytewave.stockcontroller.models.entities.Product;
 import com.bytewave.stockcontroller.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,9 +28,10 @@ public class ProductController {
     }
     //Insert user
     @PostMapping
-    public ResponseEntity<Product> insert(@RequestBody Product data){
-        service.insert(data);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(data.getId()).toUri();
+    public ResponseEntity<Product> insert(@RequestBody ProductDTO dataDTO){
+        Product product = service.fromDTO(dataDTO);
+        product = service.insert(product);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dataDTO.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
@@ -44,6 +46,16 @@ public class ProductController {
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable String id){
         service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    //Update product by id
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Product> update(@RequestBody ProductDTO dataDTO, @PathVariable String id){
+        Product product = service.fromDTO(dataDTO);
+        product.setId(id);
+        product = service.update(product);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(product.getId()).toUri();
         return ResponseEntity.noContent().build();
     }
 
