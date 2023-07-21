@@ -2,12 +2,13 @@ package com.bytewave.stockcontroller.controllers;
 
 import com.bytewave.stockcontroller.models.Product;
 import com.bytewave.stockcontroller.repositories.ProductRepository;
+import com.bytewave.stockcontroller.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,14 +18,21 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
-    private ProductRepository repository;
+    private ProductService service;
 
 
     //Index products
     @GetMapping
     public ResponseEntity<List<Product>> index(){
-        Product p1 = new Product("1", "Monitor Gamer", "Monitor Gamer 125Hz", 1200.0, 230);
-        List<Product> list = new ArrayList<>(Arrays.asList(p1));
-        return ResponseEntity.ok().body(list);
+        List<Product> products = service.index();
+        return ResponseEntity.ok().body(products);
     }
+
+    @PostMapping
+    public ResponseEntity<Product> insert(@RequestBody Product data){
+        service.insert(data);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(data.getId()).toUri();
+        return ResponseEntity.created(uri).build();
+    }
+
 }
